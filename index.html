@@ -4,78 +4,82 @@
     <meta charset="UTF-8">
     <title>Mountview Master Challenge</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #2c3e50; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        #app { width: 80%; max-width: 600px; background: white; color: #333; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .timer { font-weight: bold; color: #e74c3c; margin-bottom: 20px; text-align: right; }
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 15px; border: none; border-radius: 10px; cursor: pointer; background: #3498db; color: white; font-weight: bold; }
-        button:disabled { background: #bdc3c7; }
-        .q-text { font-size: 22px; margin-bottom: 20px; }
-        .option { display: block; padding: 10px; border: 1px solid #ddd; margin: 5px 0; border-radius: 5px; cursor: pointer; }
+        body { 
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+            background: #1a1a2e; font-family: 'Segoe UI', sans-serif; color: white; 
+        }
+        #app { 
+            width: 80%; height: 80%; background: #16213e; padding: 50px; 
+            border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            text-align: center; border: 4px solid #0f3460;
+        }
+        h1 { font-size: 3rem; margin-bottom: 20px; color: #e94560; }
+        h2 { font-size: 2.5rem; margin: 10px 0; }
+        .timer { font-size: 2rem; color: #ffeb3b; font-weight: bold; margin-bottom: 30px; }
+        .q-box { font-size: 2.2rem; font-weight: bold; margin: 40px 0; padding: 30px; background: #0f3460; border-radius: 20px; }
+        .option { 
+            display: block; padding: 25px; margin: 15px auto; background: #533483; 
+            border-radius: 15px; cursor: pointer; font-size: 1.8rem; font-weight: bold; width: 60%;
+            transition: 0.3s;
+        }
+        .option:hover { background: #e94560; transform: scale(1.05); }
+        button { 
+            padding: 20px 50px; border: none; border-radius: 15px; cursor: pointer; 
+            background: #e94560; color: white; font-weight: bold; font-size: 1.8rem; margin-top: 30px;
+        }
+        input { font-size: 1.8rem; padding: 15px; width: 50%; border-radius: 10px; border: none; text-align: center; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    <div id="quiz-container">
-        <h1>Welcome, Ethan</h1>
-        <button onclick="startChallenge()">Start Assessment</button>
+    <div id="content">
+        <h1><b>MOUNTVIEW MASTER CHALLENGE</b></h1>
+        <input type="text" id="username" placeholder="Enter Your Name">
+        <br>
+        <button onclick="start()"><b>START ASSESSMENT</b></button>
     </div>
 </div>
 
 <script>
     const subjects = ["Maths", "English", "Science", "Global Perspectives"];
-    const quizData = {
-        Maths: Array.from({length: 10}, (_, i) => ({ q: `${20+(i*2)} + ${15+i}`, options: ["35", "45", "50", "25"], ans: "0" })),
-        English: Array.from({length: 10}, (_, i) => ({ q: "Choose the correct spelling:", options: ["Cat", "Catt", "Kaat", "Cattz"], ans: "0" })),
-        Science: Array.from({length: 10}, (_, i) => ({ q: "Which of these is a natural material?", options: ["Plastic", "Wood", "Metal", "Glass"], ans: "1" })),
-        "Global Perspectives": Array.from({length: 10}, (_, i) => ({ q: "Why is it important to recycle?", options: ["It is fun", "To save Earth", "To waste space", "It is hard"], ans: "1" }))
-    };
+    let sIdx = 0, qIdx = 0, time = 600, timer;
 
-    let currentSubjectIdx = 0, currentQ = 0, timeLeft = 600, timerInterval;
-
-    function startChallenge() { renderQ(); startTimer(); }
-
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            if (timeLeft === 180) alert("⚠️ 3 minutes left!");
-            if (timeLeft <= 0) { clearInterval(timerInterval); nextSubject(); }
-            document.getElementById('timer-display').innerText = Math.floor(timeLeft/60) + ":" + (timeLeft%60).toString().padStart(2, '0');
+    function start() {
+        if(!document.getElementById('username').value) return alert("Please enter your name!");
+        renderQ();
+        timer = setInterval(() => {
+            time--;
+            if(time === 180) alert("⚠️ 7 MINUTES PASSED! TIME IS RUNNING OUT!");
+            if(time <= 0) nextSub();
+            document.getElementById('timer').innerText = Math.floor(time/60) + ":" + (time%60).toString().padStart(2, '0');
         }, 1000);
     }
 
     function renderQ() {
-        let sub = subjects[currentSubjectIdx];
-        let q = quizData[sub][currentQ];
         document.getElementById('app').innerHTML = `
-            <div class="timer">Time: <span id="timer-display">10:00</span></div>
-            <h2>${sub}</h2>
-            <div class="q-text">${currentQ + 1}. ${q.q}</div>
-            ${q.options.map((o, i) => `<label class="option"><input type="radio" name="ans" value="${i}"> ${o}</label>`).join('')}
-            <div class="btn-group">
-                <button ${currentQ === 0 ? 'disabled' : ''} onclick="prevQ()">Previous</button>
-                <button onclick="nextQ()">Next</button>
-            </div>
+            <div class="timer">TIME REMAINING: <span id="timer">10:00</span></div>
+            <h2><b>CHAPTER: ${subjects[sIdx]} | QUESTION ${qIdx + 1}/10</b></h2>
+            <div class="q-box"><b>EXAMPLE QUESTION: WHAT IS ${20+qIdx} + ${10+qIdx}?</b></div>
+            ${['A', 'B', 'C', 'D'].map(o => `<div class="option" onclick="nextQ()"><b>OPTION ${o}</b></div>`).join('')}
         `;
     }
 
     function nextQ() {
-        currentQ++;
-        if (currentQ >= 10) nextSubject(); else renderQ();
+        if(navigator.vibrate) navigator.vibrate(50);
+        qIdx++;
+        if(qIdx >= 10) {
+            clearInterval(timer);
+            document.getElementById('app').innerHTML = `<h1><b>${subjects[sIdx]} FINISHED!</b></h1>
+            <button onclick="nextSub()"><b>PROGRESS TO NEXT SUBJECT</b></button>`;
+        } else renderQ();
     }
 
-    function prevQ() { if(currentQ > 0) { currentQ--; renderQ(); } }
-
-    function nextSubject() {
-        clearInterval(timerInterval);
-        currentSubjectIdx++;
-        currentQ = 0;
-        timeLeft = 600;
-        if (currentSubjectIdx < subjects.length) { startChallenge(); }
-        else { document.getElementById('app').innerHTML = "<h1>Assessment Complete!</h1>"; }
+    function nextSub() {
+        sIdx++; qIdx = 0; time = 600;
+        if(sIdx < subjects.length) renderQ();
+        else document.getElementById('app').innerHTML = `<h1><b>CHALLENGE COMPLETED!</b></h1>`;
     }
 </script>
 </body>
 </html>
-
