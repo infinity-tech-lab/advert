@@ -3,162 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Salon | Premium Grooming</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
-
+    <title>Mountview Master Challenge</title>
     <style>
-        :root {
-            --gold: #d4af37;
-            --black: #0a0a0a;
-            --gray: #1a1a1a;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--black);
-            color: var(--white);
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            height: 80vh;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold); margin: 0; }
-        .hero p { font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; }
-
-        /* --- Services Section --- */
-        .section { padding: 60px 20px; max-width: 1000px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        
-        .card {
-            background: var(--gray);
-            padding: 25px;
-            border-radius: 10px;
-            border-bottom: 3px solid var(--gold);
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-10px); background: #222; }
-        .card h3 { color: var(--gold); margin-top: 0; }
-        .price { font-weight: 700; color: var(--gold); font-size: 1.2rem; }
-
-        /* --- Booking Form --- */
-        .booking-container {
-            background: var(--gray);
-            padding: 40px;
-            border-radius: 15px;
-            margin-top: 40px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            background: #000;
-            border: 1px solid #333;
-            color: white;
-            border-radius: 5px;
-        }
-
-        .btn {
-            background: var(--gold);
-            color: black;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        .btn:hover { background: #f1c40f; }
-
-        footer { text-align: center; padding: 40px; font-size: 0.8rem; color: #555; }
-
-        /* KILL SWITCH */
-        #status-lock { display: none; position: fixed; top: 0; width: 100%; height: 100%; background: #000; z-index: 10000; text-align: center; padding-top: 20%; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #2c3e50; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; }
+        #app { width: 90%; height: 90%; background: white; border-radius: 20px; overflow-y: auto; padding: 40px; box-shadow: 0 10px 50px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #34495e; }
+        .subject-box { margin-bottom: 30px; border-top: 2px solid #ecf0f1; padding-top: 20px; }
+        .q-box { margin-bottom: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
+        .btn { width: 100%; padding: 20px; background: #27ae60; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; font-weight: bold; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <div id="status-lock"><h1>OFFLINE</h1><p>Contact E7HAN Studios for support.</p></div>
+<div id="app">
+    <div id="content">
+        <h1>Mountview Master Challenge</h1>
+        <input type="text" id="username" placeholder="Enter Student Name">
+        <button class="btn" onclick="startApp()">Enter Assessment</button>
+    </div>
+</div>
 
-    <section class="hero">
-        <h1>THE ELITE SALON</h1>
-        <p>Sharp Cuts. Fresh Styles. Pure Confidence.</p>
-        <a href="#book" style="text-decoration:none;"><button class="btn" style="width:auto;">Book Your Chair</button></a>
-    </section>
+<script>
+    // Chapter structure: 5 chapters, each with 10 questions per subject (40 total)
+    const chapters = Array.from({length: 5}, (_, chapIdx) => ({
+        name: `Chapter ${chapIdx + 1}`,
+        subjects: {
+            Maths: Array.from({length: 10}, (_, i) => ({q: `Maths ${chapIdx+1}.${i+1}: ${10+i} + ${5+i} = ?`, options: [(15+i*2).toString(), (10+i).toString(), (20+i).toString()], ans: (15+i*2).toString()})),
+            English: Array.from({length: 10}, (_, i) => ({q: `English ${chapIdx+1}.${i+1}: Identify the verb in: 'The water falls.'`, options: ["The", "water", "falls"], ans: "falls"})),
+            Science: Array.from({length: 10}, (_, i) => ({q: `Science ${chapIdx+1}.${i+1}: What is precipitation?`, options: ["Water falling", "Sunlight", "A rock"], ans: "Water falling"})),
+            Global: Array.from({length: 10}, (_, i) => ({q: `Global ${chapIdx+1}.${i+1}: Why is sharing important?`, options: ["It is kind", "It is bad", "It is boring"], ans: "It is kind"}))
+        }
+    }));
 
-    <section class="section">
-        <h2 style="text-align:center; color:var(--gold);">Our Services</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Executive Fade</h3>
-                <p>The cleanest fade in Blantyre.</p>
-                <p class="price">MK 8,000</p>
-            </div>
-            <div class="card">
-                <h3>Beard Sculpting</h3>
-                <p>Precise lining and hydration.</p>
-                <p class="price">MK 5,000</p>
-            </div>
-            <div class="card">
-                <h3>Full Grooming</h3>
-                <p>Haircut, Beard, and Facial.</p>
-                <p class="price">MK 15,000</p>
-            </div>
-        </div>
-    </section>
+    let chapter = 0, name = "";
 
-    <section class="section" id="book">
-        <div class="booking-container">
-            <h2 style="text-align:center;">Make an Appointment</h2>
-            <input type="text" id="clientName" placeholder="Your Name">
-            <select id="service">
-                <option value="Executive Fade">Executive Fade</option>
-                <option value="Beard Sculpting">Beard Sculpting</option>
-                <option value="Full Grooming">Full Grooming</option>
-            </select>
-            <input type="text" id="datePicker" placeholder="Select Date & Time">
-            <button class="btn" onclick="bookNow()">Confirm via WhatsApp</button>
-        </div>
-    </section>
+    function startApp() {
+        name = document.getElementById('username').value;
+        if(!name) return alert("Please enter your name.");
+        render();
+    }
 
-    <footer>
-        &copy; 2026 ELITE SALON. ALL RIGHTS RESERVED.<br>
-        DESIGNED BY E7HAN STUDIOS
-    </footer>
+    function render() {
+        let chap = chapters[chapter];
+        let html = `<h1>${chap.name} - ${name}</h1>`;
+        for(let sub in chap.subjects) {
+            html += `<div class="subject-box"><h2>${sub}</h2>`;
+            chap.subjects[sub].forEach((item, i) => {
+                html += `<div class="q-box"><p>${item.q}</p>${item.options.map(o => `<label><input type="radio" name="${sub}${i}" value="${o}"> ${o}</label><br>`).join('')}</div>`;
+            });
+            html += `</div>`;
+        }
+        html += `<button class="btn" onclick="next()">Submit ${chap.name}</button>`;
+        document.getElementById('content').innerHTML = html;
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        // Kill Switch Logic
-        const isActive = true;
-        if(!isActive) document.getElementById('status-lock').style.display = 'block';
-
-        flatpickr("#datePicker", { enableTime: true, dateFormat: "Y-m-d H:i", theme: "dark" });
-
-        function bookNow() {
-            const name = document.getElementById('clientName').value;
-            const service = document.getElementById('service').value;
-            const time = document.getElementById('datePicker').value;
-            const phone = "265986178668";
-
-            if(!name || !time) {
-
+    function next() {
+        chapter++;
+        if(chapter < 5) render();
+        else document.getElementById('content').innerHTML = `<h1>🎉 Assessment Complete!</h1><p>Great effort, ${name}!</p><button class="btn" onclick="location.reload()">Start New Challenge</button>`;
+    }
+</script>
+</body>
+</html>
