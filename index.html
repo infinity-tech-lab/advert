@@ -6,11 +6,12 @@
     <style>
         body { margin: 0; background: #0f172a; font-family: 'Segoe UI', sans-serif; color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; }
         #app { width: 90%; max-width: 1000px; background: #1e293b; padding: 50px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); text-align: center; border: 4px solid #334155; }
-        .header { font-size: 1.5rem; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px; }
+        .header { font-size: 1.5rem; color: #94a3b8; text-transform: uppercase; }
         .timer { font-size: 2.5rem; font-weight: bold; color: #fb7185; margin: 10px 0; }
-        .question { font-size: 2.8rem; font-weight: bold; margin: 40px 0; }
-        .option { display: block; width: 70%; margin: 15px auto; padding: 25px; background: #334155; border-radius: 20px; cursor: pointer; font-size: 1.8rem; font-weight: bold; border: 4px solid transparent; }
+        .question { font-size: 2.5rem; font-weight: bold; margin: 30px 0; }
+        .option { display: block; width: 70%; margin: 12px auto; padding: 20px; background: #334155; border-radius: 20px; cursor: pointer; font-size: 1.6rem; font-weight: bold; border: 4px solid transparent; }
         .option:hover { background: #475569; border: 4px solid #38bdf8; }
+        .passage { font-size: 1.8rem; background: #334155; padding: 30px; border-radius: 20px; margin: 20px 0; line-height: 1.6; }
         button { padding: 20px 50px; font-size: 1.8rem; background: #38bdf8; color: #0f172a; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
@@ -39,28 +40,28 @@
             { q: "What is 14 - 3?", options: ["9", "10", "11", "12"], ans: "11" }
         ],
         English: [
-            { q: "Which is a verb?", options: ["Cat", "Jump", "Blue", "Table"], ans: "Jump" },
-            { q: "Which is an adjective?", options: ["Run", "Happy", "Eat", "Book"], ans: "Happy" },
-            { q: "Precipitation means:", options: ["Sunshine", "Rain/Snow", "Rock", "Wind"], ans: "Rain/Snow" },
-            { q: "A noun is a:", options: ["Verb", "Person/Thing", "Adjective", "None"], ans: "Person/Thing" },
-            { q: "Cold rain (Cold is):", options: ["Verb", "Adjective", "Noun", "None"], ans: "Adjective" },
-            { q: "Past of 'jump':", options: ["Jumped", "Jump", "Jumping", "Jumps"], ans: "Jumped" },
-            { q: "Ends a sentence:", options: ["Comma", "Full stop", "Dash", "Quote"], ans: "Full stop" },
-            { q: "Synonym for 'Tiny':", options: ["Huge", "Small", "Tall", "Wide"], ans: "Small" },
+            { q: "What falls from the sky?", options: ["Sunshine", "Precipitation", "Rocks", "Sand"], ans: "Precipitation" },
+            { q: "What fills the rivers?", options: ["Cars", "Water", "Rocks", "Air"], ans: "Water" },
+            { q: "What helps plants grow?", options: ["Precipitation", "Darkness", "Plastic", "Heat"], ans: "Precipitation" },
+            { q: "Which is a verb in the text?", options: ["Sky", "Falls", "Blue", "Tall"], ans: "Falls" },
+            { q: "Which is a noun?", options: ["Falls", "Water", "Heavy", "Cold"], ans: "Water" },
             { q: "Opposite of 'Fast':", options: ["Slow", "Quick", "Big", "High"], ans: "Slow" },
-            { q: "A naming word:", options: ["Verb", "Noun", "Adjective", "Adverb"], ans: "Noun" }
+            { q: "A naming word is a:", options: ["Verb", "Noun", "Adjective", "Adverb"], ans: "Noun" },
+            { q: "Past of 'fall':", options: ["Fell", "Fall", "Falling", "Falls"], ans: "Fell" },
+            { q: "Synonym for 'Tiny':", options: ["Huge", "Small", "Tall", "Wide"], ans: "Small" },
+            { q: "Ends a sentence:", options: ["Comma", "Full stop", "Dash", "Quote"], ans: "Full stop" }
         ],
         Science: [
             { q: "Closest to Sun?", options: ["Earth", "Mars", "Mercury", "Venus"], ans: "Mercury" },
-            { q: "Rain and snow are:", options: ["Heat", "Precipitation", "Cold", "Wind"], ans: "Precipitation" },
             { q: "Rocks with layers?", options: ["Igneous", "Sedimentary", "Magma", "Lava"], ans: "Sedimentary" },
             { q: "Orbits Earth?", options: ["Sun", "Moon", "Star", "Mars"], ans: "Moon" },
             { q: "The Sun is a:", options: ["Planet", "Moon", "Star", "Rock"], ans: "Star" },
             { q: "Hardest rock?", options: ["Chalk", "Clay", "Diamond", "Sand"], ans: "Diamond" },
             { q: "Force pulling down:", options: ["Magnet", "Gravity", "Wind", "Push"], ans: "Gravity" },
-            { q: "Rocks are smooth?", options: ["Yes", "No", "Sometimes", "Never"], ans: "Yes" },
+            { q: "Can rocks be smooth?", options: ["Yes", "No", "Sometimes", "Never"], ans: "Yes" },
             { q: "Volcano rock is:", options: ["Igneous", "Sedimentary", "Soft", "Hard"], ans: "Igneous" },
-            { q: "Plants need light?", options: ["Yes", "No", "Maybe", "Never"], ans: "Yes" }
+            { q: "Plants need light?", options: ["Yes", "No", "Maybe", "Never"], ans: "Yes" },
+            { q: "What gives us heat?", options: ["Sun", "Moon", "Star", "Rock"], ans: "Sun" }
         ],
         "Global Perspectives": [
             { q: "Why share?", options: ["Kindness", "Mean", "Hoard", "None"], ans: "Kindness" },
@@ -81,8 +82,20 @@
 
     function startApp() {
         if(!document.getElementById('username').value) return alert("Enter Name!");
-        startTimer();
-        renderQ();
+        renderSubject();
+    }
+
+    function renderSubject() {
+        if (subjects[sIdx] === "English") {
+            document.getElementById('app').innerHTML = `
+                <h1><b>READ THIS PASSAGE</b></h1>
+                <div class="passage">Precipitation is water falling from the sky. It happens when clouds get heavy. Rain, snow, and hail are all types of precipitation. This water fills our rivers and helps plants grow on the ground.</div>
+                <button onclick="startTimer(); renderQ()"><b>START QUESTIONS</b></button>
+            `;
+        } else {
+            startTimer();
+            renderQ();
+        }
     }
 
     function startTimer() {
@@ -124,7 +137,7 @@
 
     function nextSub() {
         sIdx++; qIdx = 0; timeLeft = 600; score = 0; wrongQs = [];
-        if(sIdx < subjects.length) { startTimer(); renderQ(); }
+        if(sIdx < subjects.length) { renderSubject(); }
         else document.getElementById('app').innerHTML = `<h1><b>CHALLENGE COMPLETED!</b></h1>`;
     }
 </script>
