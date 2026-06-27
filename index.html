@@ -2,32 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mountview Master Challenge</title>
+    <title>Mountview Assessment</title>
     <style>
-        body { 
-            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
-            background: #1a1a2e; font-family: 'Segoe UI', sans-serif; color: white; 
-        }
-        #app { 
-            width: 80%; height: 80%; background: #16213e; padding: 50px; 
-            border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
-            text-align: center; border: 4px solid #0f3460;
-        }
-        h1 { font-size: 3rem; margin-bottom: 20px; color: #e94560; }
-        h2 { font-size: 2.5rem; margin: 10px 0; }
-        .timer { font-size: 2rem; color: #ffeb3b; font-weight: bold; margin-bottom: 30px; }
-        .q-box { font-size: 2.2rem; font-weight: bold; margin: 40px 0; padding: 30px; background: #0f3460; border-radius: 20px; }
-        .option { 
-            display: block; padding: 25px; margin: 15px auto; background: #533483; 
-            border-radius: 15px; cursor: pointer; font-size: 1.8rem; font-weight: bold; width: 60%;
-            transition: 0.3s;
-        }
-        .option:hover { background: #e94560; transform: scale(1.05); }
-        button { 
-            padding: 20px 50px; border: none; border-radius: 15px; cursor: pointer; 
-            background: #e94560; color: white; font-weight: bold; font-size: 1.8rem; margin-top: 30px;
-        }
-        input { font-size: 1.8rem; padding: 15px; width: 50%; border-radius: 10px; border: none; text-align: center; }
+        body { margin: 0; background: #0f172a; font-family: 'Segoe UI', sans-serif; color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        #app { width: 85%; max-width: 900px; background: #1e293b; padding: 50px; border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center; border: 2px solid #334155; }
+        .header { font-size: 1.5rem; color: #94a3b8; margin-bottom: 10px; text-transform: uppercase; }
+        h1 { font-size: 3rem; margin: 10px 0; color: #38bdf8; }
+        .timer { font-size: 2.5rem; font-weight: bold; color: #fb7185; margin: 20px 0; }
+        .question { font-size: 2.5rem; font-weight: bold; margin: 40px 0; line-height: 1.4; }
+        .option { display: block; width: 80%; margin: 15px auto; padding: 25px; background: #334155; border-radius: 15px; cursor: pointer; font-size: 1.8rem; transition: 0.3s; border: 3px solid transparent; }
+        .option:hover { background: #475569; border: 3px solid #38bdf8; }
+        button { padding: 20px 60px; font-size: 1.8rem; background: #38bdf8; color: #0f172a; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -35,49 +20,104 @@
 <div id="app">
     <div id="content">
         <h1><b>MOUNTVIEW MASTER CHALLENGE</b></h1>
-        <input type="text" id="username" placeholder="Enter Your Name">
-        <br>
-        <button onclick="start()"><b>START ASSESSMENT</b></button>
+        <input type="text" id="username" placeholder="Enter Name" style="font-size: 1.5rem; padding: 15px; width: 60%; margin-bottom: 20px;">
+        <br><button onclick="startApp()"><b>START ASSESSMENT</b></button>
     </div>
 </div>
 
 <script>
-    const subjects = ["Maths", "English", "Science", "Global Perspectives"];
-    let sIdx = 0, qIdx = 0, time = 600, timer;
+    const quizData = {
+        Maths: [
+            { q: "What is 20 + 15?", options: ["25", "35", "45", "55"] },
+            { q: "What is 100 - 45?", options: ["45", "55", "65", "35"] },
+            { q: "What is 12 x 5?", options: ["50", "60", "70", "80"] },
+            { q: "What is 81 ÷ 9?", options: ["7", "8", "9", "10"] },
+            { q: "What is half of 50?", options: ["20", "25", "30", "15"] },
+            { q: "What is 15 + 15 + 10?", options: ["30", "40", "50", "35"] },
+            { q: "What is 9 x 9?", options: ["81", "72", "90", "88"] },
+            { q: "What is 200 - 50?", options: ["100", "150", "120", "130"] },
+            { q: "What is 30 ÷ 3?", options: ["5", "15", "10", "3"] },
+            { q: "What is 5 x 5?", options: ["20", "25", "30", "35"] }
+        ],
+        English: [
+            { q: "Which word is a verb?", options: ["Dog", "Jump", "Blue", "Table"] },
+            { q: "Which word is an adjective?", options: ["Run", "Happy", "Eat", "Book"] },
+            { q: "What is a group of words that tells a story?", options: ["Letter", "Sentence", "Word", "Comma"] },
+            { q: "Precipitation is a form of:", options: ["Sunshine", "Water", "Rock", "Wind"] },
+            { q: "Which is a noun?", options: ["Table", "Fast", "Read", "Big"] },
+            { q: "Find the adjective in 'The cold rain':", options: ["The", "Cold", "Rain", "Is"] },
+            { q: "Which is a past tense verb?", options: ["Jumped", "Jump", "Jumping", "Jumps"] },
+            { q: "What ends a sentence?", options: ["Comma", "Full stop", "Dash", "Capital"], ans: 1 },
+            { q: "Synonym for 'Tiny':", options: ["Huge", "Small", "Tall", "Wide"] },
+            { q: "What is a word that names a place?", options: ["Verb", "Adjective", "Noun", "Pronoun"] }
+        ],
+        Science: [
+            { q: "Which planet is closest to the Sun?", options: ["Earth", "Mars", "Mercury", "Venus"] },
+            { q: "What is the name for rain/snow?", options: ["Evaporation", "Precipitation", "Heat", "Cold"] },
+            { q: "Which rock has layers?", options: ["Igneous", "Sedimentary", "Magma", "Lava"] },
+            { q: "What orbits the Earth?", options: ["Sun", "Moon", "Star", "Mars"] },
+            { q: "Is the Sun a star?", options: ["Yes", "No", "Maybe", "Don't know"] },
+            { q: "Hardest natural rock?", options: ["Chalk", "Clay", "Diamond", "Sand"] },
+            { q: "Force that pulls us down?", options: ["Magnetism", "Gravity", "Wind", "Light"] },
+            { q: "Can rocks be smooth?", options: ["Yes", "No", "Only some", "Never"] },
+            { q: "Volcano rock is called:", options: ["Igneous", "Sedimentary", "Soft", "Hard"] },
+            { q: "Do plants need light?", options: ["Yes", "No", "Sometimes", "Only at night"] }
+        ],
+        "Global Perspectives": [
+            { q: "Why is sharing important?", options: ["To be kind", "To be mean", "To have more", "It's not"], ans: 0 },
+            { q: "How to help the planet?", options: ["Recycle", "Litter", "Waste", "Ignore"], ans: 0 },
+            { q: "Why do people move to new places?", options: ["Work", "To fly", "Just because", "No reason"], ans: 0 },
+            { q: "What is a global citizen?", options: ["Care for world", "Travel only", "Have phone", "Play"], ans: 0 },
+            { q: "Why is sleep healthy?", options: ["Rest body", "Grow hair", "Eat more", "Run"], ans: 0 },
+            { q: "What is digital footprint?", options: ["Online info", "Shoe size", "Map", "Game"], ans: 0 },
+            { q: "How to welcome new people?", options: ["Be kind", "Ignore", "Laugh", "Hide"], ans: 0 },
+            { q: "Why share ideas?", options: ["To learn", "To hide", "To eat", "To run"], ans: 0 },
+            { q: "Where does food come from?", options: ["Farms", "Sky", "Cars", "Moon"], ans: 0 },
+            { q: "Health includes:", options: ["Exercise", "Trash", "Noise", "Dust"], ans: 0 }
+        ]
+    };
 
-    function start() {
-        if(!document.getElementById('username').value) return alert("Please enter your name!");
+    const subjects = Object.keys(quizData);
+    let sIdx = 0, qIdx = 0, timeLeft = 600, timer;
+
+    function startApp() {
+        if(!document.getElementById('username').value) return alert("Enter name!");
+        startTimer();
         renderQ();
+    }
+
+    function startTimer() {
         timer = setInterval(() => {
-            time--;
-            if(time === 180) alert("⚠️ 7 MINUTES PASSED! TIME IS RUNNING OUT!");
-            if(time <= 0) nextSub();
-            document.getElementById('timer').innerText = Math.floor(time/60) + ":" + (time%60).toString().padStart(2, '0');
+            timeLeft--;
+            if(timeLeft === 420) alert("⚠️ 7 MINUTES REMAINING!");
+            if(timeLeft <= 0) nextSub();
+            document.getElementById('timer-val').innerText = Math.floor(timeLeft/60) + ":" + (timeLeft%60).toString().padStart(2, '0');
         }, 1000);
     }
 
     function renderQ() {
+        const q = quizData[subjects[sIdx]][qIdx];
         document.getElementById('app').innerHTML = `
-            <div class="timer">TIME REMAINING: <span id="timer">10:00</span></div>
-            <h2><b>CHAPTER: ${subjects[sIdx]} | QUESTION ${qIdx + 1}/10</b></h2>
-            <div class="q-box"><b>EXAMPLE QUESTION: WHAT IS ${20+qIdx} + ${10+qIdx}?</b></div>
-            ${['A', 'B', 'C', 'D'].map(o => `<div class="option" onclick="nextQ()"><b>OPTION ${o}</b></div>`).join('')}
+            <div class="header">SUBJECT: ${subjects[sIdx]} | CHAPTER: ${sIdx + 1}</div>
+            <div class="timer">TIME: <span id="timer-val">10:00</span></div>
+            <div class="question"><b>${qIdx + 1}. ${q.q}</b></div>
+            ${q.options.map((o, i) => `<div class="option" onclick="handleAnswer()"><b>${o}</b></div>`).join('')}
         `;
     }
 
-    function nextQ() {
-        if(navigator.vibrate) navigator.vibrate(50);
+    function handleAnswer() {
         qIdx++;
-        if(qIdx >= 10) {
+        if(qIdx < 10) renderQ();
+        else {
             clearInterval(timer);
             document.getElementById('app').innerHTML = `<h1><b>${subjects[sIdx]} FINISHED!</b></h1>
             <button onclick="nextSub()"><b>PROGRESS TO NEXT SUBJECT</b></button>`;
-        } else renderQ();
+        }
     }
 
     function nextSub() {
-        sIdx++; qIdx = 0; time = 600;
-        if(sIdx < subjects.length) renderQ();
+        sIdx++; qIdx = 0; timeLeft = 600;
+        if(sIdx < subjects.length) { startTimer(); renderQ(); }
         else document.getElementById('app').innerHTML = `<h1><b>CHALLENGE COMPLETED!</b></h1>`;
     }
 </script>
