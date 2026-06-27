@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mountview Assessment</title>
+    <title>Mountview Master Challenge</title>
     <style>
         body { margin: 0; background: #0f172a; font-family: 'Segoe UI', sans-serif; color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        #app { width: 85%; max-width: 900px; background: #1e293b; padding: 50px; border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center; border: 2px solid #334155; }
-        .header { font-size: 1.5rem; color: #94a3b8; margin-bottom: 10px; text-transform: uppercase; }
-        h1 { font-size: 3rem; margin: 10px 0; color: #38bdf8; }
-        .timer { font-size: 2.5rem; font-weight: bold; color: #fb7185; margin: 20px 0; }
-        .question { font-size: 2.5rem; font-weight: bold; margin: 40px 0; line-height: 1.4; }
-        .option { display: block; width: 80%; margin: 15px auto; padding: 25px; background: #334155; border-radius: 15px; cursor: pointer; font-size: 1.8rem; transition: 0.3s; border: 3px solid transparent; }
-        .option:hover { background: #475569; border: 3px solid #38bdf8; }
-        button { padding: 20px 60px; font-size: 1.8rem; background: #38bdf8; color: #0f172a; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; }
+        #app { width: 90%; max-width: 1000px; background: #1e293b; padding: 60px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); text-align: center; border: 4px solid #334155; }
+        .header { font-size: 1.8rem; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; }
+        .timer { font-size: 3rem; font-weight: bold; color: #fb7185; margin: 20px 0; }
+        .question { font-size: 3rem; font-weight: bold; margin: 50px 0; }
+        .option { display: block; width: 70%; margin: 20px auto; padding: 30px; background: #334155; border-radius: 20px; cursor: pointer; font-size: 2rem; font-weight: bold; transition: 0.2s; border: 4px solid transparent; }
+        .option:hover { background: #475569; border: 4px solid #38bdf8; }
+        button { padding: 25px 70px; font-size: 2rem; background: #38bdf8; color: #0f172a; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -20,7 +19,7 @@
 <div id="app">
     <div id="content">
         <h1><b>MOUNTVIEW MASTER CHALLENGE</b></h1>
-        <input type="text" id="username" placeholder="Enter Name" style="font-size: 1.5rem; padding: 15px; width: 60%; margin-bottom: 20px;">
+        <input type="text" id="username" placeholder="Enter Name" style="font-size: 2rem; padding: 20px; width: 60%; border-radius: 15px; margin-bottom: 30px;">
         <br><button onclick="startApp()"><b>START ASSESSMENT</b></button>
     </div>
 </div>
@@ -28,52 +27,52 @@
 <script>
     const quizData = {
         Maths: [
-            { q: "What is 20 + 15?", options: ["25", "35", "45", "55"] },
-            { q: "What is 100 - 45?", options: ["45", "55", "65", "35"] },
-            { q: "What is 12 x 5?", options: ["50", "60", "70", "80"] },
-            { q: "What is 81 ÷ 9?", options: ["7", "8", "9", "10"] },
-            { q: "What is half of 50?", options: ["20", "25", "30", "15"] },
-            { q: "What is 15 + 15 + 10?", options: ["30", "40", "50", "35"] },
-            { q: "What is 9 x 9?", options: ["81", "72", "90", "88"] },
-            { q: "What is 200 - 50?", options: ["100", "150", "120", "130"] },
-            { q: "What is 30 ÷ 3?", options: ["5", "15", "10", "3"] },
-            { q: "What is 5 x 5?", options: ["20", "25", "30", "35"] }
+            { q: "What is 20 + 15?", options: ["25", "35", "45", "55"], ans: "35" },
+            { q: "What is 80 - 45?", options: ["45", "55", "35", "25"], ans: "35" },
+            { q: "What is 12 + 24?", options: ["36", "46", "26", "56"], ans: "36" },
+            { q: "What is 90 - 10?", options: ["70", "80", "90", "60"], ans: "80" },
+            { q: "What is 50 + 25?", options: ["65", "75", "85", "55"], ans: "75" },
+            { q: "What is 44 - 11?", options: ["23", "33", "43", "53"], ans: "33" },
+            { q: "What is 30 + 30?", options: ["50", "60", "70", "40"], ans: "60" },
+            { q: "What is 75 - 25?", options: ["50", "40", "60", "30"], ans: "50" },
+            { q: "What is 15 + 15?", options: ["20", "40", "30", "50"], ans: "30" },
+            { q: "What is 60 - 20?", options: ["30", "40", "50", "20"], ans: "40" }
         ],
         English: [
-            { q: "Which word is a verb?", options: ["Dog", "Jump", "Blue", "Table"] },
-            { q: "Which word is an adjective?", options: ["Run", "Happy", "Eat", "Book"] },
-            { q: "What is a group of words that tells a story?", options: ["Letter", "Sentence", "Word", "Comma"] },
-            { q: "Precipitation is a form of:", options: ["Sunshine", "Water", "Rock", "Wind"] },
-            { q: "Which is a noun?", options: ["Table", "Fast", "Read", "Big"] },
-            { q: "Find the adjective in 'The cold rain':", options: ["The", "Cold", "Rain", "Is"] },
-            { q: "Which is a past tense verb?", options: ["Jumped", "Jump", "Jumping", "Jumps"] },
-            { q: "What ends a sentence?", options: ["Comma", "Full stop", "Dash", "Capital"], ans: 1 },
-            { q: "Synonym for 'Tiny':", options: ["Huge", "Small", "Tall", "Wide"] },
-            { q: "What is a word that names a place?", options: ["Verb", "Adjective", "Noun", "Pronoun"] }
+            { q: "Which word is a verb (action)?", options: ["Cat", "Jump", "Blue", "Table"], ans: "Jump" },
+            { q: "Which word is an adjective?", options: ["Run", "Happy", "Eat", "Book"], ans: "Happy" },
+            { q: "Precipitation means:", options: ["Sunshine", "Rain/Snow", "Rock", "Wind"], ans: "Rain/Snow" },
+            { q: "A noun is a:", options: ["Doing word", "Person/Place/Thing", "Describing word", "Empty"], ans: "Person/Place/Thing" },
+            { q: "The cold rain (Cold is):", options: ["Verb", "Adjective", "Noun", "None"], ans: "Adjective" },
+            { q: "Past of 'jump':", options: ["Jumped", "Jump", "Jumping", "Jumps"], ans: "Jumped" },
+            { q: "Ends a sentence:", options: ["Comma", "Full stop", "Dash", "Quote"], ans: "Full stop" },
+            { q: "Synonym for 'Tiny':", options: ["Huge", "Small", "Tall", "Wide"], ans: "Small" },
+            { q: "Opposite of 'Fast':", options: ["Slow", "Quick", "Big", "High"], ans: "Slow" },
+            { q: "A word for a place:", options: ["Verb", "Noun", "Adjective", "Adverb"], ans: "Noun" }
         ],
         Science: [
-            { q: "Which planet is closest to the Sun?", options: ["Earth", "Mars", "Mercury", "Venus"] },
-            { q: "What is the name for rain/snow?", options: ["Evaporation", "Precipitation", "Heat", "Cold"] },
-            { q: "Which rock has layers?", options: ["Igneous", "Sedimentary", "Magma", "Lava"] },
-            { q: "What orbits the Earth?", options: ["Sun", "Moon", "Star", "Mars"] },
-            { q: "Is the Sun a star?", options: ["Yes", "No", "Maybe", "Don't know"] },
-            { q: "Hardest natural rock?", options: ["Chalk", "Clay", "Diamond", "Sand"] },
-            { q: "Force that pulls us down?", options: ["Magnetism", "Gravity", "Wind", "Light"] },
-            { q: "Can rocks be smooth?", options: ["Yes", "No", "Only some", "Never"] },
-            { q: "Volcano rock is called:", options: ["Igneous", "Sedimentary", "Soft", "Hard"] },
-            { q: "Do plants need light?", options: ["Yes", "No", "Sometimes", "Only at night"] }
+            { q: "Closest to the Sun?", options: ["Earth", "Mars", "Mercury", "Venus"], ans: "Mercury" },
+            { q: "Rain and snow are:", options: ["Heat", "Precipitation", "Cold", "Wind"], ans: "Precipitation" },
+            { q: "Which rock has layers?", options: ["Igneous", "Sedimentary", "Magma", "Lava"], ans: "Sedimentary" },
+            { q: "Orbits the Earth?", options: ["Sun", "Moon", "Star", "Mars"], ans: "Moon" },
+            { q: "The Sun is a:", options: ["Planet", "Moon", "Star", "Rock"], ans: "Star" },
+            { q: "Hardest natural rock?", options: ["Chalk", "Clay", "Diamond", "Sand"], ans: "Diamond" },
+            { q: "Force pulling us down:", options: ["Magnet", "Gravity", "Wind", "Push"], ans: "Gravity" },
+            { q: "Can rocks be smooth?", options: ["Yes", "No", "Only some", "Never"], ans: "Yes" },
+            { q: "Volcano rock is:", options: ["Igneous", "Sedimentary", "Soft", "Hard"], ans: "Igneous" },
+            { q: "Do plants need light?", options: ["Yes", "No", "Maybe", "Never"], ans: "Yes" }
         ],
         "Global Perspectives": [
-            { q: "Why is sharing important?", options: ["To be kind", "To be mean", "To have more", "It's not"], ans: 0 },
-            { q: "How to help the planet?", options: ["Recycle", "Litter", "Waste", "Ignore"], ans: 0 },
-            { q: "Why do people move to new places?", options: ["Work", "To fly", "Just because", "No reason"], ans: 0 },
-            { q: "What is a global citizen?", options: ["Care for world", "Travel only", "Have phone", "Play"], ans: 0 },
-            { q: "Why is sleep healthy?", options: ["Rest body", "Grow hair", "Eat more", "Run"], ans: 0 },
-            { q: "What is digital footprint?", options: ["Online info", "Shoe size", "Map", "Game"], ans: 0 },
-            { q: "How to welcome new people?", options: ["Be kind", "Ignore", "Laugh", "Hide"], ans: 0 },
-            { q: "Why share ideas?", options: ["To learn", "To hide", "To eat", "To run"], ans: 0 },
-            { q: "Where does food come from?", options: ["Farms", "Sky", "Cars", "Moon"], ans: 0 },
-            { q: "Health includes:", options: ["Exercise", "Trash", "Noise", "Dust"], ans: 0 }
+            { q: "Why share?", options: ["To be kind", "To be mean", "To hoard", "No reason"], ans: "To be kind" },
+            { q: "How to help Earth?", options: ["Recycle", "Litter", "Waste", "Ignore"], ans: "Recycle" },
+            { q: "People move for:", options: ["Work", "To fly", "Fun", "No goal"], ans: "Work" },
+            { q: "Global citizen:", options: ["Cares for world", "Travels", "Uses phone", "Plays"], ans: "Cares for world" },
+            { q: "Sleep helps:", options: ["Rest body", "Grow hair", "Eat more", "Run"], ans: "Rest body" },
+            { q: "Digital footprint:", options: ["Online info", "Shoe size", "Map", "Game"], ans: "Online info" },
+            { q: "Welcome new people:", options: ["Be kind", "Ignore", "Laugh", "Hide"], ans: "Be kind" },
+            { q: "Share ideas to:", options: ["Learn", "Hide", "Eat", "Run"], ans: "Learn" },
+            { q: "Food comes from:", options: ["Farms", "Sky", "Cars", "Moon"], ans: "Farms" },
+            { q: "Health includes:", options: ["Exercise", "Trash", "Noise", "Dust"], ans: "Exercise" }
         ]
     };
 
@@ -81,7 +80,7 @@
     let sIdx = 0, qIdx = 0, timeLeft = 600, timer;
 
     function startApp() {
-        if(!document.getElementById('username').value) return alert("Enter name!");
+        if(!document.getElementById('username').value) return alert("Enter Name!");
         startTimer();
         renderQ();
     }
@@ -89,7 +88,7 @@
     function startTimer() {
         timer = setInterval(() => {
             timeLeft--;
-            if(timeLeft === 420) alert("⚠️ 7 MINUTES REMAINING!");
+            if(timeLeft === 180) alert("⚠️ 7 MINUTES PASSED! TIME IS RUNNING OUT!");
             if(timeLeft <= 0) nextSub();
             document.getElementById('timer-val').innerText = Math.floor(timeLeft/60) + ":" + (timeLeft%60).toString().padStart(2, '0');
         }, 1000);
@@ -101,11 +100,13 @@
             <div class="header">SUBJECT: ${subjects[sIdx]} | CHAPTER: ${sIdx + 1}</div>
             <div class="timer">TIME: <span id="timer-val">10:00</span></div>
             <div class="question"><b>${qIdx + 1}. ${q.q}</b></div>
-            ${q.options.map((o, i) => `<div class="option" onclick="handleAnswer()"><b>${o}</b></div>`).join('')}
+            ${q.options.map(o => `<div class="option" onclick="handleAnswer('${o}', '${q.ans}')"><b>${o}</b></div>`).join('')}
         `;
     }
 
-    function handleAnswer() {
+    function handleAnswer(selected, correct) {
+        if(selected !== correct) alert("Wrong! The correct answer was: " + correct);
+        if(navigator.vibrate) navigator.vibrate(50);
         qIdx++;
         if(qIdx < 10) renderQ();
         else {
