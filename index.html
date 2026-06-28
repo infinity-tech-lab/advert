@@ -2,144 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mountview Assessment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Questionnaire</title>
     <style>
-        body { margin: 0; background: #0f172a; font-family: 'Segoe UI', sans-serif; color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        #app { width: 90%; max-width: 1000px; background: #1e293b; padding: 50px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); text-align: center; border: 4px solid #334155; }
-        .header { font-size: 1.5rem; color: #94a3b8; text-transform: uppercase; }
-        .timer { font-size: 2.5rem; font-weight: bold; color: #fb7185; margin: 10px 0; }
-        .question { font-size: 2.5rem; font-weight: bold; margin: 30px 0; }
-        .option { display: block; width: 70%; margin: 12px auto; padding: 20px; background: #334155; border-radius: 20px; cursor: pointer; font-size: 1.6rem; font-weight: bold; border: 4px solid transparent; }
-        .option:hover { background: #475569; border: 4px solid #38bdf8; }
-        .passage { font-size: 1.8rem; background: #334155; padding: 30px; border-radius: 20px; margin: 20px 0; line-height: 1.6; }
-        button { padding: 20px 50px; font-size: 1.8rem; background: #38bdf8; color: #0f172a; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        body { margin: 0; font-family: sans-serif; background-color: #ffd6dc; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        #app { width: 350px; height: 600px; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; border: 4px solid #ff4d6d; }
+        .hidden { display: none !important; }
+        button { padding: 15px 30px; margin: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .yes { background-color: #ff4d6d; color: white; }
+        .no { background-color: #f1f1f1; }
+        input[type=range] { width: 200px; }
+        h2 { color: #555; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    <div id="content">
-        <h1><b>MOUNTVIEW MASTER CHALLENGE</b></h1>
-        <input type="text" id="username" placeholder="Enter Name" style="font-size: 1.8rem; padding: 15px; width: 50%; border-radius: 15px; margin-bottom: 30px;">
-        <br><button onclick="startApp()"><b>START ASSESSMENT</b></button>
+    <div id="step1">
+        <h2>Do you think I'm gonna read all that?</h2>
+        <button class="yes" onclick="nextStep(2)">Yes</button>
+        <button class="no" onclick="alert('Wrong answer!')">No</button>
+    </div>
+
+    <div id="step2" class="hidden">
+        <h2>You're right! You're wasting your time.</h2>
+        <button class="yes" onclick="nextStep(3)">Next</button>
+    </div>
+
+    <div id="step3" class="hidden">
+        <h2>How much do you think I care?</h2>
+        <input type="range" id="careRange" min="0" max="100" value="0">
+        <br><br>
+        <button class="yes" onclick="nextStep(4)">Lock it in</button>
+    </div>
+
+    <div id="step4" class="hidden">
+        <h2>Can you PLEASE stop texting me?</h2>
+        <button class="yes" onclick="nextStep(5)">Yes</button>
+        <button class="no" onclick="alert('Try again!')">No</button>
+    </div>
+
+    <div id="step5" class="hidden">
+        <h2>THANK GOD 🙏</h2>
+        <button class="yes" onclick="location.reload()">Restart</button>
     </div>
 </div>
 
 <script>
-    const quizData = {
-        Maths: [
-            { q: "What is 8 + 7?", options: ["13", "14", "15", "16"], ans: "15" },
-            { q: "What is 19 - 5?", options: ["12", "13", "14", "15"], ans: "14" },
-            { q: "What is 6 + 9?", options: ["13", "14", "15", "16"], ans: "15" },
-            { q: "What is 18 - 9?", options: ["7", "8", "9", "10"], ans: "9" },
-            { q: "What is 5 + 7?", options: ["11", "12", "13", "14"], ans: "12" },
-            { q: "What is 16 - 4?", options: ["10", "11", "12", "13"], ans: "12" },
-            { q: "What is 9 + 8?", options: ["15", "16", "17", "18"], ans: "17" },
-            { q: "What is 15 - 6?", options: ["7", "8", "9", "10"], ans: "9" },
-            { q: "What is 4 + 7?", options: ["10", "11", "12", "13"], ans: "11" },
-            { q: "What is 14 - 3?", options: ["9", "10", "11", "12"], ans: "11" }
-        ],
-        English: [
-            { q: "What falls from the sky?", options: ["Sunshine", "Precipitation", "Rocks", "Sand"], ans: "Precipitation" },
-            { q: "What fills the rivers?", options: ["Cars", "Water", "Rocks", "Air"], ans: "Water" },
-            { q: "What helps plants grow?", options: ["Precipitation", "Darkness", "Plastic", "Heat"], ans: "Precipitation" },
-            { q: "Which is a verb in the text?", options: ["Sky", "Falls", "Blue", "Tall"], ans: "Falls" },
-            { q: "Which is a noun?", options: ["Falls", "Water", "Heavy", "Cold"], ans: "Water" },
-            { q: "Opposite of 'Fast':", options: ["Slow", "Quick", "Big", "High"], ans: "Slow" },
-            { q: "A naming word is a:", options: ["Verb", "Noun", "Adjective", "Adverb"], ans: "Noun" },
-            { q: "Past of 'fall':", options: ["Fell", "Fall", "Falling", "Falls"], ans: "Fell" },
-            { q: "Synonym for 'Tiny':", options: ["Huge", "Small", "Tall", "Wide"], ans: "Small" },
-            { q: "Ends a sentence:", options: ["Comma", "Full stop", "Dash", "Quote"], ans: "Full stop" }
-        ],
-        Science: [
-            { q: "Closest to Sun?", options: ["Earth", "Mars", "Mercury", "Venus"], ans: "Mercury" },
-            { q: "Rocks with layers?", options: ["Igneous", "Sedimentary", "Magma", "Lava"], ans: "Sedimentary" },
-            { q: "Orbits Earth?", options: ["Sun", "Moon", "Star", "Mars"], ans: "Moon" },
-            { q: "The Sun is a:", options: ["Planet", "Moon", "Star", "Rock"], ans: "Star" },
-            { q: "Hardest rock?", options: ["Chalk", "Clay", "Diamond", "Sand"], ans: "Diamond" },
-            { q: "Force pulling down:", options: ["Magnet", "Gravity", "Wind", "Push"], ans: "Gravity" },
-            { q: "Can rocks be smooth?", options: ["Yes", "No", "Sometimes", "Never"], ans: "Yes" },
-            { q: "Volcano rock is:", options: ["Igneous", "Sedimentary", "Soft", "Hard"], ans: "Igneous" },
-            { q: "Plants need light?", options: ["Yes", "No", "Maybe", "Never"], ans: "Yes" },
-            { q: "What gives us heat?", options: ["Sun", "Moon", "Star", "Rock"], ans: "Sun" }
-        ],
-        "Global Perspectives": [
-            { q: "Why share?", options: ["Kindness", "Mean", "Hoard", "None"], ans: "Kindness" },
-            { q: "How to help Earth?", options: ["Recycle", "Litter", "Waste", "Ignore"], ans: "Recycle" },
-            { q: "People move for:", options: ["Work", "Fly", "Fun", "None"], ans: "Work" },
-            { q: "Global citizen:", options: ["Cares for world", "Travels", "Phone", "Plays"], ans: "Cares for world" },
-            { q: "Sleep helps:", options: ["Rest body", "Hair", "Eat", "Run"], ans: "Rest body" },
-            { q: "Digital footprint:", options: ["Online info", "Shoe", "Map", "Game"], ans: "Online info" },
-            { q: "Welcome new people:", options: ["Be kind", "Ignore", "Laugh", "Hide"], ans: "Be kind" },
-            { q: "Share ideas to:", options: ["Learn", "Hide", "Eat", "Run"], ans: "Learn" },
-            { q: "Food comes from:", options: ["Farms", "Sky", "Cars", "Moon"], ans: "Farms" },
-            { q: "Health includes:", options: ["Exercise", "Trash", "Noise", "Dust"], ans: "Exercise" }
-        ]
-    };
-
-    const subjects = Object.keys(quizData);
-    let sIdx = 0, qIdx = 0, timeLeft = 600, timer, score = 0, wrongQs = [];
-
-    function startApp() {
-        if(!document.getElementById('username').value) return alert("Enter Name!");
-        renderSubject();
-    }
-
-    function renderSubject() {
-        if (subjects[sIdx] === "English") {
-            document.getElementById('app').innerHTML = `
-                <h1><b>READ THIS PASSAGE</b></h1>
-                <div class="passage">Precipitation is water falling from the sky. It happens when clouds get heavy. Rain, snow, and hail are all types of precipitation. This water fills our rivers and helps plants grow on the ground.</div>
-                <button onclick="startTimer(); renderQ()"><b>START QUESTIONS</b></button>
-            `;
-        } else {
-            startTimer();
-            renderQ();
+    function nextStep(stepNumber) {
+        // Hide all steps
+        for(let i=1; i<=5; i++) {
+            document.getElementById('step' + i).classList.add('hidden');
         }
-    }
-
-    function startTimer() {
-        timer = setInterval(() => {
-            timeLeft--;
-            if(timeLeft === 180) alert("⚠️ 7 MINUTES PASSED!");
-            if(timeLeft <= 0) handleAnswer(null, "Time Out");
-            document.getElementById('timer-val').innerText = Math.floor(timeLeft/60) + ":" + (timeLeft%60).toString().padStart(2, '0');
-        }, 1000);
-    }
-
-    function renderQ() {
-        const q = quizData[subjects[sIdx]][qIdx];
-        document.getElementById('app').innerHTML = `
-            <div class="header">SUBJECT: ${subjects[sIdx]} | CHAPTER: ${sIdx + 1}</div>
-            <div class="timer">TIME: <span id="timer-val">10:00</span></div>
-            <div class="question"><b>${qIdx + 1}. ${q.q}</b></div>
-            ${q.options.map(o => `<div class="option" onclick="handleAnswer('${o}', '${q.ans}')"><b>${o}</b></div>`).join('')}
-        `;
-    }
-
-    function handleAnswer(selected, correct) {
-        if(selected !== null) {
-            if(selected === correct) score++;
-            else wrongQs.push({q: quizData[subjects[sIdx]][qIdx].q, ans: correct});
-        }
-        qIdx++;
-        if(qIdx < 10) renderQ();
-        else {
-            clearInterval(timer);
-            let review = wrongQs.map(item => `<li>${item.q} (Correct: <b>${item.ans}</b>)</li>`).join('');
-            document.getElementById('app').innerHTML = `
-                <h1><b>${subjects[sIdx]} FINISHED!</b></h1>
-                <h2>Score: ${score}/10</h2>
-                <ul style="text-align:left; font-size: 1.5rem;">${wrongQs.length ? "Corrections:<br>"+review : "Perfect Score!"}</ul>
-                <button onclick="nextSub()"><b>PROGRESS TO NEXT SUBJECT</b></button>`;
-        }
-    }
-
-    function nextSub() {
-        sIdx++; qIdx = 0; timeLeft = 600; score = 0; wrongQs = [];
-        if(sIdx < subjects.length) { renderSubject(); }
-        else document.getElementById('app').innerHTML = `<h1><b>CHALLENGE COMPLETED!</b></h1>`;
+        // Show target step
+        document.getElementById('step' + stepNumber).classList.remove('hidden');
     }
 </script>
+
 </body>
 </html>
